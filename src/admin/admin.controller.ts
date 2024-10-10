@@ -1,10 +1,20 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import {
-    AdminLoginDto, AdminUpdateUserDto, ChangeAdminPasswordDto, RegisterAdminDto, 
-    ResendAdminOtpDto, ResetAdminPasswordDto, ResetAdminPasswordLinkDto, UpdateAdminDto, 
-    VerifyAdminOtpDto} from './admin.dto';
+    AdminLoginDto, AdminUpdateUserDto, ChangeAdminPasswordDto, RegisterAdminDto,
+    ResendAdminOtpDto, ResetAdminPasswordDto, ResetAdminPasswordLinkDto, UpdateAdminDto,
+    VerifyAdminOtpDto
+} from './admin.dto';
+import { JwtGuard } from 'src/auth/guard/jwt.guard';
+import { RolesGuard } from 'src/auth/guard/role.guard';
+import { Roles } from 'src/auth/decorators.ts/role.decorators';
+import { Role } from 'src/Enum/general.enum';
 
+
+@UseGuards(JwtGuard)
+
+@UseGuards(RolesGuard)
+@Roles(Role.ADMIN)
 @Controller('admin')
 export class AdminController {
     constructor(private readonly adminservice: AdminService) { }
@@ -54,12 +64,12 @@ export class AdminController {
         return await this.adminservice.changeAdminPassword(id, dto)
     }
 
-    @Put('/update-user/:id/:id')
+    @Put('/update-user/:adminId/:userId')
     async updateUser(@Param('adminId') adminId: number, @Param('userId') userId: number, @Body() dto: AdminUpdateUserDto) {
         return await this.adminservice.adminUpdateUser(adminId, userId, dto)
     }
 
-    @Delete('/delete-user/:id/:id')
+    @Delete('/delete-user/:adminId/:userId')
     async deleteUser(@Param('adminId') adminId: number, @Param('userId') userId: number) {
         return await this.adminservice.adminDelete(adminId, userId)
     }

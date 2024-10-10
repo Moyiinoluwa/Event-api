@@ -21,7 +21,7 @@ export class EventsController {
         return await this.eventsservice.getAnEvent(id)
     }
     
-    @Put('/update/:d')
+    @Put('/update/:id')
     async updateEvent(@Param('id') id: number, @Body() dto: UpdateEventDto) {
         return await this.eventsservice.updateEvent(id, dto)
     }
