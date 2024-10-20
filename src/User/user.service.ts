@@ -12,7 +12,6 @@ import {
     ChangeUserPasswordDto, LoginDto, ResendUserOtpDto, ResetPasswordLinkOtpDto,
     ResetPasswordOtpDto, UpdateUserDto, VerifyOtpDto
 } from 'src/Common/common.dto';
-import { LessThan } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -93,7 +92,7 @@ export class UserService {
         const time = new Date();
         time.setMinutes(time.getMinutes() + 10)
 
-        //create new verification code user
+        //create new verification code for user
         const userCode = new UserOtp();
         userCode.email = dto.email;
         userCode.expirationTime = time;

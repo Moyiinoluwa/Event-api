@@ -17,13 +17,13 @@ export class CmsService {
         //check if the admin is regsitered
         const admin = await this.adminrepository.findOne({ where: { id } })
         if (!admin) {
-            throw new BadRequestException('admin cannot upload event')
+            throw new NotFoundException('admin cannot upload event')
         }
 
         //check if the event has been uploaded before
         const event = await this.eventrepository.findOne({ where: { id } })
         if (!event) {
-            throw new BadRequestException('Cannot post the same event twice')
+            throw new NotFoundException('Cannot post the same event twice')
         }
 
         // create new event

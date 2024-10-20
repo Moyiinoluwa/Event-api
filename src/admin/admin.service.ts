@@ -5,7 +5,7 @@ import { AdminOtpRepository } from 'src/Common/common.repository';
 import {
     AdminLoginDto, AdminUpdateUserDto, ChangeAdminPasswordDto, RegisterAdminDto,
     ResendAdminOtpDto, ResetAdminPasswordDto, ResetAdminPasswordLinkDto,
-    SendMailToUsers, UpdateAdminDto, VerifyAdminOtpDto
+     UpdateAdminDto, VerifyAdminOtpDto
 } from './admin.dto';
 import * as bcrypt from 'bcrypt'
 import { AdminEntity } from 'src/Entity/admin.entity';

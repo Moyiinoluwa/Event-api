@@ -13,15 +13,16 @@ export class RolesGuard implements CanActivate {
       context.getClass(),  
     ]);
 
-    // If no specific roles are required for the route, allow the request (return `true`)
-    if (!requiredRoles) {
+    console.log(requiredRoles, 'lazy')
+    // If no specific roles are required for the route, allow the request
+    if (!requiredRoles.length) {
       return true;
     }
 
     // Get the current user object from the HTTP request (assuming user info is attached to the request)
-    const user = context.switchToHttp().getRequest().user;
-
-     
-    return requiredRoles.some((role) => user.role === role);
+    const user = context.switchToHttp().getRequest()
+    const hasRequiredRoles = requiredRoles.some((role) => user.role === role)
+     return hasRequiredRoles;
+    
   }
 }
