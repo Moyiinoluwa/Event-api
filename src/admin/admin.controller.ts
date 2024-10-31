@@ -6,7 +6,7 @@ import {
     VerifyAdminOtpDto
 } from './admin.dto';
 import { JwtGuard } from 'src/auth/guard/jwt.guard';
-import { RolesGuard } from 'src/auth/guard/role.guard';
+import { AdminRolesGuard } from 'src/auth/guard/admin.role.guard';
 import { Roles } from 'src/auth/decorators.ts/role.decorators';
 import { Role } from 'src/Enum/general.enum';
 import { ApiBadRequestResponse, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
@@ -60,17 +60,17 @@ export class AdminController {
     }
 
 
-    @UseGuards(RolesGuard)
+    @UseGuards(AdminRolesGuard)
     @Roles(Role.ADMIN)
     @UseGuards(JwtGuard)
     @Put('/update/:id')
-    @ApiCreatedResponse({ description: 'admin profile upd'})
+    @ApiCreatedResponse({ description: 'admin profile update'})
     @ApiBadRequestResponse({ description: 'no changes made'})
     async updateAdmin(@Param('id') id: number, @Body() dto: UpdateAdminDto) {
         return await this.adminservice.updateAdmin(id, dto)
     }
 
-    @UseGuards(RolesGuard)
+    @UseGuards(AdminRolesGuard)
     @Roles(Role.ADMIN)
     @UseGuards(JwtGuard)
     @Delete('/delete/:id')
@@ -80,7 +80,7 @@ export class AdminController {
         return await this.adminservice.deleteAdmin(id)
     }
 
-    @UseGuards(RolesGuard)
+    @UseGuards(AdminRolesGuard)
     @Roles(Role.ADMIN)
     @UseGuards(JwtGuard)
     @Patch('/change/:id')
@@ -90,7 +90,7 @@ export class AdminController {
         return await this.adminservice.changeAdminPassword(id, dto)
     }
 
-    @UseGuards(RolesGuard)
+    @UseGuards(AdminRolesGuard)
     @Roles(Role.ADMIN)
     @UseGuards(JwtGuard)
     @Put('/update-user/:adminId/:userId')
@@ -100,7 +100,7 @@ export class AdminController {
         return await this.adminservice.adminUpdateUser(adminId, userId, dto)
     }
 
-    @UseGuards(RolesGuard)
+    @UseGuards(AdminRolesGuard)
     @Roles(Role.ADMIN)
     @UseGuards(JwtGuard)
     @Delete('/delete-user/:adminId/:userId')
@@ -110,7 +110,7 @@ export class AdminController {
         return await this.adminservice.adminDelete(adminId, userId)
     }
 
-    @UseGuards(RolesGuard)
+    @UseGuards(AdminRolesGuard)
     @Roles(Role.ADMIN)
     @UseGuards(JwtGuard)
     @Post('/send-mail/:id')
@@ -120,7 +120,7 @@ export class AdminController {
         return await this.adminservice.adminSendMail(id)
     }
 
-    @UseGuards(RolesGuard)
+    @UseGuards(AdminRolesGuard)
     @Roles(Role.ADMIN)
     @UseGuards(JwtGuard)
     @Get('/get-users/:id')
@@ -130,10 +130,10 @@ export class AdminController {
         return await this.adminservice.allUsers(id)
     }
 
-    @UseGuards(RolesGuard)
+    @UseGuards(AdminRolesGuard)
     @Roles(Role.ADMIN)
     @UseGuards(JwtGuard)
-    @Get('/get-one/:id/:id')
+    @Get('/get-one/:adminId/:userId')
     @ApiCreatedResponse({ description: 'user profile '})
     @ApiBadRequestResponse({ description: 'wrong user'})
     async getOne(@Param('adminId') adminId: number, @Param('userId') userId: number) {

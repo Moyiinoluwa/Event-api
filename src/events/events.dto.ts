@@ -81,7 +81,7 @@ export class UpdateEventDto {
     @IsNotEmpty()
     date: string;
 
-    
+
     @ApiProperty({
         description: 'time',
         example: '4pm'
@@ -91,21 +91,21 @@ export class UpdateEventDto {
 }
 
 export class RegisterEventDto {
-    
+
     @ApiProperty({
         description: 'name of the event',
         example: 'teachers retreat'
     })
-    @IsNotEmpty({ message: 'name cannot be empty'})
+    @IsNotEmpty({ message: 'name cannot be empty' })
     name: string
 
-    
+
     @ApiProperty({
         description: 'user email',
         example: 'mark@gmail.com'
     })
-    @IsEmail({}, {message: 'invalid email'})
-    @IsNotEmpty({ message: 'name cannot be empty'})
+    @IsEmail({}, { message: 'invalid email' })
+    @IsNotEmpty({ message: 'name cannot be empty' })
     email: string
-    
+
 }

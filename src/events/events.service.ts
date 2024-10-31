@@ -62,6 +62,9 @@ export class EventsService {
         event.location = dto.location;
         event.planner = dto.planner;
         event.type = dto.type;
+        event.title = dto.title;
+        event.time = dto.time;
+
 
         //save changes to database
         await this.eventrepository.save(event);

@@ -13,7 +13,7 @@ export class CmsService {
         @InjectRepository(UserRepository) private readonly userrpository: UserRepository) { }
 
     // ADMIN UPLOADS EVENT
-    async uplaodEvent(id: number, dto: CreateEventDto): Promise<{ message: string }> {
+    async uploadEvent(id: number, dto: CreateEventDto): Promise<{ message: string }> {
         //check if the admin is regsitered
         const admin = await this.adminrepository.findOne({ where: { id } })
         if (!admin) {
@@ -42,43 +42,18 @@ export class CmsService {
     }
 
 
-    //ADMIN DELETE EVENT
-    async DeleteEvent(adminId: number, eventId: number ): Promise<{ message: string }> {
-
-        //check if admin is regsitered
-        const admin = await this.adminrepository.findOne({ where: { id: adminId } })
-        if (!admin) {
-            throw new BadRequestException('admin cannot delete event')
-        }
-
-        //check if the event is available
-        const event = await this.eventrepository.findOne({ where: { id: eventId} })
-        if (!event) {
-            throw new BadRequestException('event does not exist')
-        }
-
-        //delete the event
-        await this.eventrepository.remove(event)
-
-        return { message: 'event deleted by admin' }
-
-        //problem
-        //not returning message after deleting event
-    }
-
-
     //USERS CAN VIEW ALL EVENT
-    async viewEvent(id: number): Promise<EventEntity[]> {
+    async userViewEvent(userId: number): Promise<EventEntity[]> {
 
         //check if user is registered
-        const user = await this.userrpository.findOne({ where: { id } })
+        const user = await this.userrpository.findOne({ where: { id: userId } })
         if (!user) {
-            throw new BadRequestException('user can get the list of event')
+            throw new BadRequestException('user can not get the list of event')
         }
 
         //list of events available
         const event = await this.eventrepository.find()
-        if (!event) {
+        if (event.length === 0) {
             throw new BadRequestException('There are no events at the moment')
         }
 
@@ -110,42 +85,12 @@ export class CmsService {
         // }
 
         //save to event database
-        await this.userrpository.save(event);
+        await this.userrpository.save(user);
 
         return { message: 'User registered for event successfully' }
     }
 
-    //ADMIN GET ALL EVENTS
-    async adminGetEvents(id: number): Promise<EventEntity[]> {
-        //check if admin is registered
-        const admin = await this.adminrepository.findOne({ where: { id } })
-        if (!admin) {
-            throw new NotFoundException('admin cannot get users')
-        }
-
-        const event = await this.eventrepository.find()
-        if (!event) {
-            throw new NotFoundException('no event')
-        }
-            return event;
-    }
-
-    //ADMIN GETS AN EVENT
-    //check if admin is register
-    async adminGetAnEvent(adminId: number, eventId: number) {
-        const admin = await this.adminrepository.findOne({ where: { id: adminId }})
-        if(!admin) {
-            throw new NotFoundException('admin cannot get this event')
-        }
-
-        //check if event is available
-        const event = await this.eventrepository.findOne({ where: { id: eventId }})
-        if(!event) {
-            throw new NotFoundException('This event is not available')
-        } else {
-            return event;
-        }
-    }
+     
     //USER CAN SEARCH FOR EVENT BY CATEGORY
     //USER CAN PAY FOR EVENT
 }

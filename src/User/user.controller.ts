@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { RegisterUserDto } from './user.dto';
 import { 
@@ -6,6 +6,9 @@ import {
     ResetPasswordOtpDto, UpdateUserDto, VerifyOtpDto
 } from 'src/Common/common.dto';
 import { ApiBadRequestResponse, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { JwtGuard } from 'src/auth/guard/jwt.guard';
+import { UserRoleGuard } from 'src/auth/guard/user.role.guard';
+
 
 
 @ApiTags('user')
@@ -63,6 +66,8 @@ export class UserController {
     }
 
     //change user password
+    @UseGuards(UserRoleGuard)
+    @UseGuards(JwtGuard)
     @ApiCreatedResponse({ description: 'password changed'})
     @ApiBadRequestResponse({ description: 'password not changed'})
     @Patch('/change/:id')
@@ -71,6 +76,8 @@ export class UserController {
     }
 
     //update user profile
+    @UseGuards(UserRoleGuard)
+    @UseGuards(JwtGuard)
     @ApiCreatedResponse({ description: 'user profile updated'})
     @ApiBadRequestResponse({ description: 'profile not updated'})
     @Put('update/:id')
@@ -79,6 +86,8 @@ export class UserController {
     }
 
     //delete user
+    @UseGuards(UserRoleGuard)
+    @UseGuards(JwtGuard)
     @ApiCreatedResponse({ description: 'user profile deleted'})
     @ApiBadRequestResponse({ description: 'not deleted'})
     @Delete('delete/:id')
